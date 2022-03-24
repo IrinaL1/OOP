@@ -76,7 +76,7 @@ int main () {
 	while(!file.eof()){
 		std::string key;
 		file >> key;
-		airpots[key] = Point(key);
+		airpots.emplace(key, Point(key));
 		Num_air++;
 	}
 	file.close();
