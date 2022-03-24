@@ -3,79 +3,37 @@
 
 #include "flight_tp.h"
 
-flight_between_two_points::flight_between_two_points(string new_start, string new_finish, int new_start_day, int new_finish_day, int new_start_time, int new_finish_time, int new_id){
-
-	this->start = new_start;
-	this->finish = new_finish;
-	(this->t).start_day = new_start_day;
-	(this->t).finish_day = new_finish_day;
-	(this->t).start_time = new_start_time;
-	(this->t).finish_time = new_finish_time;
-	(this->t).flight_time = flight_time();
-	this->id = new_id;
-
-}
-
-int flight_between_two_points::flight_time() {
+FlightBetweenTwoPoints * FlightBetweenTwoPoints::return_flight(int return_start_day, int return_start_time) const {
 	
-	return ((t.finish_day - t.start_day - 1) * 60 * 24 + 60 * 24 - t.start_time + t.finish_time);
-}
+	if ((return_start_day > get_finish_day()) or ((return_start_day == get_finish_day()) && (return_start_time >= get_finish_time()))) {
 
-void flight_between_two_points::return_flight(int return_start_day, int return_start_time, flight_between_two_points * ptr) {
+	struct time * ret_Time = new struct time;
+	string * Points = new string;
+
+	*Points = get_finish();
+	*(Points + 1) = get_start();
+	ret_Time->start_day = return_start_day;
+	ret_Time->start_time = return_start_time;
+
+	ret_Time->finish_day = (return_start_time + get_flight_time())/(60 * 24) + return_start_day; //Если самолет прилетит уже в другой день
+	ret_Time->finish_time = (ret_Time->start_time + get_flight_time()) - (ret_Time->finish_day - ret_Time->start_day) * 60 * 24;
+
 	
-	if ((return_start_day > t.start_day) or ((return_start_day == t.start_day) && (return_start_time >= t.finish_time))) {
-
-	int	return_finish_day = (return_start_time + t.flight_time)/(60 * 24) + return_start_day; //Если самолет прилетит уже в другой день
-	int	return_finish_time = (return_start_time + t.flight_time) - (return_finish_day - return_start_day) * 60 * 24;
-	flight_between_two_points RF (finish, start, return_start_day, return_finish_day, return_start_time, return_finish_time, id);
-	ptr = &RF;
+	return new FlightBetweenTwoPoints (2, Points, ret_Time);
 	}
+	else return NULL;
+	
 }
 
-bool operator<(const flight_between_two_points &f1, const flight_between_two_points &f2) {
+bool operator<(const FlightBetweenTwoPoints &f1, const FlightBetweenTwoPoints &f2) {
 
-	if ((f1.get_start_day() < f2.get_start_day()) && (f1.get_start_time() < f2.get_start_time()))
-		return true;
-	else
-		return false;
+	return ((f1.get_start_day() < f2.get_start_day()) && (f1.get_start_time() < f2.get_start_time()));
+
 }
 
-bool operator==(const flight_between_two_points &f1, const flight_between_two_points &f2) {
+bool operator==(const FlightBetweenTwoPoints &f1, const FlightBetweenTwoPoints &f2) {
 
-	if ((f1.get_start_day() == f2.get_start_day()) && (f1.get_start_time() == f2.get_start_time()))
-		return true;
-	else
-		return false;
+	return ((f1.get_start_day() == f2.get_start_day()) && (f1.get_start_time() == f2.get_start_time()));
+
 }
 
-string flight_between_two_points::get_start() const {
-	return start;
-}
-
-string flight_between_two_points::get_finish() const {
-	return finish;
-}
-
-int flight_between_two_points::get_start_day() const {
-	return t.start_day;
-}
-
-int flight_between_two_points::get_finish_day() const {
-	return t.finish_day;
-}
-
-int flight_between_two_points::get_start_time() const {
-	return t.start_time;
-}
-
-int flight_between_two_points::get_finish_time() const {
-	return t.finish_time;
-}
-
-int flight_between_two_points::get_flight_time () const {
-	return t.flight_time;
-}
-
-int flight_between_two_points::get_id() const {
-	return id;
-}

@@ -1,24 +1,55 @@
 #include <cassert>
 #include <cstdio>
 #include <iostream>
-#include "flight_tp.h"
+#include <fstream>
+#include <map>
 
-void test_flight_tp() {
-	//создаем рейс
-	flight_between_two_points N1("Moscow", "Astrakan", 1, 1, 1260, 1380, 737); //Время отлета в минутах равно 1260 = 60 * 21, т е вылет в 21:00, прилет в 23:00
-	assert(N1.get_start() == "Moscow");
-	assert(N1.get_finish() == "Astrakhan");
-	assert(N1.get_start_day() == 1);
-	assert(N1.get_finish_day() == 1);
-	assert(N1.get_start_time() == 1260);
-	assert(N1.get_finish_time() == 1380);
-	assert(N1.get_id() == 737);
-	assert(N1.get_flight_time() == 120);
-	cout <<"puhi" << N1.get_start_time() << '\n';
+#include "flight_tp.h"
+#include "flight.h"
+#include "point.h"
+
+void test_flight_tp(int Num_air) {
+
+	//считываю рейсы из файлы
+	struct time * Time = new struct time[Num_air-1];
+	string * Points = new string[Num_air];
+	int Num_P = 0;
+	int Num_F = 0; //Количество рейсов в файле
+	std::ifstream file("input.txt");
+	file >> Num_F;
+	FlightBetweenTwoPoints **ArrTpPtr = new FlightBetweenTwoPoints*[Num_F];
+
+	for(int i = 0; !file.eof(); i++){
+
+		file >> Num_P; //Узнали сколько пунктов
+		//Считываем пункты и заполняем структуры времени
+		for (int j = 0; i < Num_P; i++) {
+			file >> *(Points + i);		
+		}
+		for (int j = 0; i < Num_P - 1; i++) {
+			file >> (Time + i)->start_day;
+			file >> (Time + i)->finish_day;
+			file >> (Time + i)->start_time;
+			file >> (Time + i)->finish_time; 
+		}
+		//можем создать объект рейс
+		if (Num_P == 2) {
+			*(*ArrTpPtr + i) = FlightBetweenTwoPoints(Num_P, Points, Time);
+		}
+	}
+
+	assert((**ArrTpPtr).get_start() == "Moscow");
+	assert((**ArrTpPtr).get_finish() == "Astrakhan");
+	assert((**ArrTpPtr).get_start_day() == 1);
+	assert((**ArrTpPtr).get_finish_day() == 1);
+	assert((**ArrTpPtr).get_start_time() == 1260);
+	assert((**ArrTpPtr).get_finish_time() == 1380);
+	//assert(*arr_tpf.get_id() == 737);
+	assert((**ArrTpPtr).get_flight_time() == 120);
 	//создаем обратный рейс
-	flight_between_two_points * ptr_return_flight = 0;
-	N1.return_flight(1, 1385, ptr_return_flight);
-	flight_between_two_points N1_return = *ptr_return_flight;
+	FlightBetweenTwoPoints * ptr_return_flight = 0;
+	(**ArrTpPtr).return_flight(1, 1385);
+	FlightBetweenTwoPoints N1_return = *ptr_return_flight;
 	assert(N1_return.get_finish() == "Moscow");
 	assert(N1_return.get_start() == "Astrakhan");
 	cout << N1_return.get_start_time() << '\n';
@@ -26,21 +57,30 @@ void test_flight_tp() {
 	assert(N1_return.get_finish_day() == 2);
 	assert(N1_return.get_start_time() == 1385);
 	assert(N1_return.get_finish_time() == 65);
-	assert(N1_return.get_id() == 737);
+	//assert(N1_return.get_id() == 737);
 	assert(N1_return.get_flight_time() == 120);
 	//проверяем операторы < и ==
-	assert(&N1 < &N1_return == true);
-	assert(&N1_return < &N1 == false);
-	flight_between_two_points N2("Moscow", "Astrakan", 2, 1, 1250, 1380, 737);
-	assert(&N1 < &N2 == true);
-	assert(&N2 < &N1 == false);
-	assert(&N1 == &N2 == false);
-	flight_between_two_points N3("Volgograd", "Astrakan", 1, 1, 1260, 1380, 737);
-	assert(&N1 < &N3 == false);
-	assert(&N1 == &N3 == true);
+	assert(**ArrTpPtr < N1_return == true);
+	assert(N1_return < **ArrTpPtr == false);
+	assert(**ArrTpPtr < **(ArrTpPtr + 1) == true);
+	assert(**(ArrTpPtr + 1) < **ArrTpPtr == false);
+	assert(**ArrTpPtr == **(ArrTpPtr + 1) == false);
 }
 
 int main () {
-	test_flight_tp();
+	//считываю аэропорты (Point)
+	std::ifstream file("airpots.txt");
+	std::map<std::string, Point> airpots;
+	//создаю map, где ключ = название города, значение = объект Point
+	int Num_air = 0; //количество аэропортов
+	while(!file.eof()){
+		std::string key;
+		file >> key;
+		airpots[key] = Point(key);
+		Num_air++;
+	}
+	file.close();
+	
+	test_flight_tp(Num_air);
 	return 0;
 }
