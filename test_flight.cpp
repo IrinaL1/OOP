@@ -165,16 +165,16 @@ int main () {
 
 	CyclicFlight F3 (Points_3, Time_3, 3);
 
-	cout << "Before timetable" << std::endl;
+	//cout << "Before timetable" << std::endl;
 	Timetable T;
 	
 	T.push_node(&F2);
-	std::cout << "After node 1" << std::endl;
+	//std::cout << "After node 1" << std::endl;
 	T.push_node(&F3);
 	T.push_node(&F1);
-	std::cout << "Before print" << std::endl;
+	//std::cout << "Before print" << std::endl;
 	T.print();
-	std::cout << "After print"	<< std::endl;	
+	//std::cout << "After print"	<< std::endl;	
 /*	for (int i = 0; i < FilePoints.size(); i++) {
 		FilePoints[i].clear();
 	}
