@@ -20,19 +20,19 @@ Flight::Flight(std::vector<std::string> new_Points, struct time * new_Time, int 
 	Points = new_Points;
 	Time = new_Time;
 	flight_time = calc_flight_time();
-	std::cout << "Flight\n";
+	//std::cout << "Flight\n";
 	id = new_id;
 }
 
 Flight::~Flight () {
 	
-	std::cout << "Before flight destr" << std::endl;
+	//std::cout << "Before flight destr" << std::endl;
 	for (int i = 0; i < Points.size(); i++) {
 		Points[i].clear();
 	}
 	Points.clear();
 	delete [] Time;
-	std::cout << "After flight destr" << std::endl;
+	//std::cout << "After flight destr" << std::endl;
 }
 
 std::string Flight::get_start() const{
@@ -44,7 +44,7 @@ std::string Flight::get_finish() const{
 }
 
 int Flight::get_start_day() const{
-	std::cout << Time->start_day << std::endl; 
+	//std::cout << Time->start_day << std::endl; 
 	return Time->start_day;
 }
 
@@ -53,7 +53,7 @@ int Flight::get_finish_day() const{
 }
 
 int Flight::get_start_time() const{
-	std::cout << " in get_start_time " << std::endl;
+	//std::cout << " in get_start_time " << std::endl;
 	return Time->start_time;
 }
 
