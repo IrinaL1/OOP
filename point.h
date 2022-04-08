@@ -9,11 +9,11 @@
 class Point {
 
 	std::string name;
-//	map <string, int> max_time;
-//	map <string, int> min_time;
+	std::map <std::string, std::pair<int, int>> bound_time;
 	
 	public:
 	Point(std::string name);
+	~Point();
 };
 
 #endif

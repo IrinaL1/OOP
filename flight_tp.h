@@ -19,4 +19,4 @@ class FlightBetweenTwoPoints: public Flight {
 bool operator<(const FlightBetweenTwoPoints &f1, const FlightBetweenTwoPoints &f2);
 bool operator==(const FlightBetweenTwoPoints &f1, const FlightBetweenTwoPoints &f2);
 
-#endif 
+#endif //FLIGHT_TP_

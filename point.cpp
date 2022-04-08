@@ -8,3 +8,10 @@ Point::Point (std::string name){
 	this->name = name;
 
 }
+
+Point::~Point() {
+
+	name.clear();
+	bound_time.clear();
+
+}
