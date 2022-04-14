@@ -16,7 +16,7 @@ struct time {
 
 class Flight {
 
-	struct time * Time;
+	std::vector<struct time> Time;
 	std::vector<std::string> Points;
 	int flight_time;
 	int id;
@@ -30,7 +30,9 @@ class Flight {
 	int get_finish_time() const;
 	int get_flight_time() const;
 	int get_id() const;
-	Flight(std::vector<std::string> new_Points, struct time * new_Time, int id);
+	std::vector<std::string> get_points() const;
+	std::vector<struct time> get_Time() const;
+	Flight(std::vector<std::string> new_Points, std::vector<struct time> new_Time, int id);
 	~Flight();
 	int calc_flight_time(); 
 };

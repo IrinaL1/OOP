@@ -15,7 +15,7 @@ void test_cyclic_flight() {
 
 	std::vector<std::string> Points_2 = {"Saint-Petesburg", "Volgograd", "Saint-Petesburg"};
 	
-	struct time * Time_2 = new struct time[2];
+	std::vector<struct time> Time_2(2);
 
 	Time_2[0].start_day = 3;
 	Time_2[0].start_time = 1400;
@@ -38,10 +38,6 @@ void test_cyclic_flight() {
 	assert(F2.get_finish_time() == 400);
 	assert(F2.get_id() == 2);
 	assert(F2.get_flight_time() == 420);
-
-/*	delete [] Time_2;
-	Points_2.clear();*/
-//	Time_2
 }
 
 void test_flight_tp() {
@@ -50,7 +46,7 @@ void test_flight_tp() {
 
 	std::vector<std::string> Points_1 = {"Moscow", "Astrakhan"};
 	
-	struct time * Time_1 = new struct time[1];
+	std::vector<struct time> Time_1(1);
 	
 	Time_1[0].start_day = 1;
 	Time_1[0].start_time = 1260;
@@ -83,10 +79,6 @@ void test_flight_tp() {
 	assert((*ptr_return_flight) < F1 == false);
 	assert((*ptr_return_flight) == F1 == false);
 	delete ptr_return_flight;
-/*	delete [] Time_1;
-	for (int i = 0; i < Points_1.size(); i++) {
-		Points_1[i].clear();
-	}*/
 }
 
 int main () {
@@ -125,7 +117,7 @@ int main () {
 	//"считываю рейсы из файла"
 	std::vector<std::string> Points_1 = {"Moscow", "Volgograd"};
 	
-	struct time * Time_1 = new struct time[1];
+	std::vector<struct time> Time_1(1);
 	
 	Time_1[0].start_day = 1;
 	Time_1[0].start_time = 1260;
@@ -136,17 +128,18 @@ int main () {
 
 	std::vector<std::string> Points_2 = {"Volgograd", "Tula"};
 	
-	struct time * Time_2 = new struct time[1];
+	std::vector<struct time> Time_2(1);
 	
 	Time_2[0].start_day = 2;
 	Time_2[0].start_time = 60;
 	Time_2[0].finish_day = 2;
 	Time_2[0].finish_time = 167;
+
 	FlightBetweenTwoPoints F2 (Points_2, Time_2, 2);
 
 	std::vector<std::string> Points_3 = {"Moscow", "Astrakhan", "Saint-Petesburg", "Moscow"};
 	
-	struct time * Time_3 = new struct time[3];
+	std::vector<struct time> Time_3(3);
 	
 	Time_3[0].start_day = 3;
 	Time_3[0].start_time = 1000;
@@ -165,20 +158,16 @@ int main () {
 
 	CyclicFlight F3 (Points_3, Time_3, 3);
 
-	//cout << "Before timetable" << std::endl;
 	Timetable T;
-	
 	T.push_node(&F2);
-	//std::cout << "After node 1" << std::endl;
 	T.push_node(&F3);
 	T.push_node(&F1);
-	//std::cout << "Before print" << std::endl;
 	T.print();
-	//std::cout << "After print"	<< std::endl;	
-/*	for (int i = 0; i < FilePoints.size(); i++) {
+
+	for (int i = 0; i < FilePoints.size(); i++) {
 		FilePoints[i].clear();
 	}
 	FilePoints.clear();
-	airpots.clear();*/
+	airpots.clear();
 	return 0;
 }
