@@ -40,7 +40,8 @@ void test_cyclic_flight() {
 	assert(F2.get_flight_time() == 420);
 }
 
-void test_flight_tp() {
+extern "C" {
+	void test_flight_tp() {
 
 	//"считываю рейсы из файла"
 
@@ -80,8 +81,9 @@ void test_flight_tp() {
 	assert((*ptr_return_flight) == F1 == false);
 	delete ptr_return_flight;
 }
-
-int main () {
+}
+extern "C" {
+	void main_py () {
 
 	test_cyclic_flight();
 	test_flight_tp();
@@ -169,5 +171,21 @@ int main () {
 	}
 	FilePoints.clear();
 	airpots.clear();
-	return 0;
 }
+}
+/*extern "C"
+{
+	Timetable * create (char *filename, char *error_msg) {
+
+		Timetable *T = new Timetable;
+		int error = T->create_1(filename);
+
+		switch(error) {
+
+
+			
+
+		}
+		return T;
+	}
+}*/
