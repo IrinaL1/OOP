@@ -12,7 +12,7 @@ class Point {
 	std::map <std::string, std::pair<int, int>> bound_time;
 	
 	public:
-	Point(std::string name);
+	Point(std::string name, std::map <std::string, std::pair<int, int>> bound_time);
 	~Point();
 };
 

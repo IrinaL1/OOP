@@ -40,7 +40,7 @@ void test_cyclic_flight() {
 	assert(F2.get_flight_time() == 420);
 }
 
-extern "C" {
+/*extern "C" {
 	void test_flight_tp() {
 
 	//"считываю рейсы из файла"
@@ -172,20 +172,4 @@ extern "C" {
 	FilePoints.clear();
 	airpots.clear();
 }
-}
-/*extern "C"
-{
-	Timetable * create (char *filename, char *error_msg) {
-
-		Timetable *T = new Timetable;
-		int error = T->create_1(filename);
-
-		switch(error) {
-
-
-			
-
-		}
-		return T;
-	}
 }*/

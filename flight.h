@@ -33,7 +33,8 @@ class Flight {
 	std::vector<std::string> get_points() const;
 	std::vector<struct time> get_Time() const;
 	Flight(std::vector<std::string> new_Points, std::vector<struct time> new_Time, int id);
-	~Flight();
+	virtual ~Flight();
+	virtual Flight * clone() const {};
 	int calc_flight_time(); 
 };
 

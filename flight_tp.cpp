@@ -36,7 +36,7 @@ bool operator<(const FlightBetweenTwoPoints &f1, const FlightBetweenTwoPoints &f
 
 }
 
-bool operator==(const FlightBetweenTwoPoints &f1, const FlightBetweenTwoPoints &f2) {
+/*extern "C"*/ bool operator==(const FlightBetweenTwoPoints &f1, const FlightBetweenTwoPoints &f2) {
 
 	return ((f1.get_start_day() == f2.get_start_day()) && (f1.get_start_time() == f2.get_start_time()));
 

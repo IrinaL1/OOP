@@ -10,8 +10,7 @@
 struct Node {
 
 	int start_time;
-	FlightBetweenTwoPoints * Node_ptr_fbtp = NULL;
-	CyclicFlight * Node_ptr_cf = NULL;
+	Flight * Node_ptr = NULL;
 	Node * next;
 	int flight_type; //1, если между 2 пунктами; 2, если циклический	
 	
@@ -25,8 +24,7 @@ class Timetable {
 
 	public:
 	Timetable();
-	void push_node (FlightBetweenTwoPoints * Ptr_fbtp);
-	void push_node (CyclicFlight * Ptr_cf);
+	void push_node (Flight * Ptr_fbtp);
 	void print ();
 	int get_flight_type();
 	int get_flight_time(int id);
