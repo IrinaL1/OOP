@@ -14,17 +14,17 @@ Sochi
 Volgograd
 100
 220
-;
+; 
 Astrakhan
 Moscow
 120
 240
-;  
+; 
 Volgograd
 Moscow
 90
 225
-;
+; 
 Tula
 Sochi
 95
@@ -46,7 +46,7 @@ Astrakhan
 2
 120
 240
-;
+:
 Volgograd
 Moscow
 Sochi
@@ -72,5 +72,4 @@ Volgograd
 4
 4
 180
-270
-;
+270:wq
