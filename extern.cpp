@@ -27,8 +27,6 @@ extern "C" Timetable * create_timetable(char * filename) {
 				if(buf == ";") break;
 				FilePoints.push_back(buf);
 			}
-//		cout << "ira"<<endl;
-		//if(!std::getline(file_ptr, buf)) cout << "Error reading" << '\n'; //считываю разделитель
 
 		//создаю аэропорты-объекты
 		std::map<std::string, Point> airports;
@@ -36,6 +34,7 @@ extern "C" Timetable * create_timetable(char * filename) {
 		std::string name_2; //связанные аэропорты
 		int min_time;
 		int max_time;
+		bool is_digit;
 		std::map <std::string, std::pair<int, int>> bound_time;
 		while(file_ptr.peek() != '.') {
 			if(!std::getline(file_ptr, name_1)) cout << "Error reading" << '\n';
@@ -44,24 +43,31 @@ extern "C" Timetable * create_timetable(char * filename) {
 				if(!std::getline(file_ptr, buf)) 
 					cout << "Error reading min_time airports" << '\n';
 				else{
-//					cout << buf<<endl;
-					min_time = stoi(buf);
-					if(min_time <= 20)
-						cout << "Incorrect min_time" << '\n';
+					is_digit = (buf.find_first_not_of("0123456789") == std::string::npos);
+					if(is_digit) {
+						min_time = stoi(buf);
+						if(min_time <= 20)
+							cout << "Incorrect min_time" << '\n';
+					}
+					else cout << "Неверный формат файла. min_time не число" << '\n';
 				}
 				if(!std::getline(file_ptr, buf)) 
 					cout << "Error reading max_time airports" << '\n';
 				else{
-//					cout << buf<<endl;
-					max_time = stoi(buf);
-					if(max_time <= 20 || max_time < min_time)
-						cout << "Incorrect max_time" << '\n';
+					is_digit = (buf.find_first_not_of("0123456789") == std::string::npos);
+					if(is_digit) {
+						max_time = stoi(buf);
+						if(max_time <= 20 || max_time < min_time)
+							cout << "Incorrect max_time" << '\n';
+					}
+					else cout << "Неверный формат файла. max_time не число" << '\n';
 				}
 				bound_time.emplace(name_2, make_pair(min_time, max_time));			
 			}
 			if(file_ptr.peek() == '.') break;
 			std::getline(file_ptr, buf);//считываю разделитель
-				airports.emplace(name_1, Point(name_1, bound_time));
+			if(buf != ";") cout << "Неверный формат файла 1" << '\n';
+			airports.emplace(name_1, Point(name_1, bound_time));
 		}
 		
 		if(!std::getline(file_ptr, buf)) cout << "Error reading" << '\n'; //считываю разделитель
@@ -76,35 +82,59 @@ extern "C" Timetable * create_timetable(char * filename) {
 
 		while(!file_ptr.eof()){
 			if(!std::getline(file_ptr, name_1)) cout << "Error reading or End of file" << '\n';
-//			cout << name_1<<endl;
-//			cout << "name_1" << '\n';
 			FlightPoints.push_back(name_1);
-//			cout << FlightPoints[0] << endl;
 			//считываю города в рейсе
-			while(file_ptr.peek() != ';' && std::getline(file_ptr, name_2)){
-//				cout << name_2 << endl;
+			while(file_ptr.peek() != ';' && std::getline(file_ptr, name_2)) {
 				FlightPoints.push_back(name_2);
 				}
 			if(!std::getline(file_ptr, buf)) cout << "Error reading" << '\n'; //считываю разделитель
+//			if(buf != ";") cout << "Неверный формат файла" << '\n';
 			if(!std::getline(file_ptr, buf)) cout << "Error reading" << '\n';
-			else id = stoi(buf);
-//			cout << buf <<endl;
+			else {
+				is_digit = (buf.find_first_not_of("0123456789") == std::string::npos);
+				if(is_digit)
+					id = stoi(buf);
+				else
+					cout << "id не число" << '\n';
+			}
+
 			while(file_ptr.peek() != ':' && std::getline(file_ptr, buf)){
-//				cout << buf <<endl;
-				BufTime.start_day = stoi(buf);
+				is_digit = (buf.find_first_not_of("0123456789") == std::string::npos);
+				if(is_digit)
+					BufTime.start_day = stoi(buf);
+				else 
+					 cout << "start_day не число" << '\n';
+
 				if(!std::getline(file_ptr, buf)) cout << "Error reading" << '\n';
-//				cout << buf <<endl;
-				BufTime.finish_day = stoi(buf);
+				else {
+					is_digit = (buf.find_first_not_of("0123456789") == std::string::npos);
+					if(is_digit)
+						BufTime.finish_day = stoi(buf);
+					else 
+						cout << "finish_day не число" << '\n';
+				}
+
 				if(!std::getline(file_ptr, buf)) cout << "Error reading" << '\n';
-//				cout << buf <<endl;
-                BufTime.start_time = stoi(buf);
+				else {
+					is_digit = (buf.find_first_not_of("0123456789") == std::string::npos);
+					if(is_digit)
+	             		BufTime.start_time = stoi(buf);
+					else 
+						 cout << "start_time не число" << '\n';
+				}
+
 				if(!std::getline(file_ptr, buf)) cout << "Error reading" << '\n';
-//				cout << buf <<endl;
-                BufTime.finish_time = stoi(buf);
+				else {
+					is_digit = (buf.find_first_not_of("0123456789") == std::string::npos);
+					if(is_digit)
+                		BufTime.finish_time = stoi(buf);
+					else
+						cout << "finish_time не число" << '\n';
+				}
+
 				FlightTime.push_back(BufTime);
 				std::getline(file_ptr, buf);//считываю разделитель
 			
-//				cout << buf << endl;
 				if (buf[0] == ':') break;
      		}
 
